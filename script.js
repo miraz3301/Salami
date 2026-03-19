@@ -83,7 +83,7 @@ async function rollDice() {
                 result: finalValue
             }, { merge: true });
 
-            result.innerText = "🎉 You got: " + finalValue;
+            result.innerText = "🎉 You got Salami: " + finalValue + " Taka";
         } catch (err) {
             result.innerText = "❌ Error saving result.";
         }
