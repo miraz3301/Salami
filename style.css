@@ -6,7 +6,7 @@ body {
     margin-top: 60px;
 }
 
-/* Card */
+/* Card UI */
 .card {
     background: rgba(255, 255, 255, 0.08);
     backdrop-filter: blur(12px);
@@ -53,18 +53,18 @@ input {
 .dice {
     font-size: 90px;
     margin: 20px 0;
-    transition: transform 0.3s ease;
 }
 
-/* Shake animation */
-@keyframes shake {
-    0% { transform: rotate(0deg); }
-    25% { transform: rotate(25deg); }
-    50% { transform: rotate(-25deg); }
-    75% { transform: rotate(15deg); }
-    100% { transform: rotate(0deg); }
+/* 3s rolling animation */
+@keyframes rollDiceAnim {
+    0%   { transform: rotate(0deg) scale(1); }
+    20%  { transform: rotate(120deg) scale(1.1); }
+    40%  { transform: rotate(240deg) scale(0.9); }
+    60%  { transform: rotate(360deg) scale(1.1); }
+    80%  { transform: rotate(540deg) scale(0.95); }
+    100% { transform: rotate(720deg) scale(1); }
 }
 
-.shake {
-    animation: shake 0.5s;
+.roll-animation {
+    animation: rollDiceAnim 3s ease-in-out;
 }
