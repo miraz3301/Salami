@@ -11,7 +11,7 @@ const firebaseConfig = {
     appId: "1:128420284829:web:ecb576bc38c4e64a5bc774",
 };
 
-// Init Firebase
+// Init
 const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
 
@@ -53,8 +53,6 @@ async function rollDice() {
         return;
     }
 
-    const value = Math.floor(Math.random() * 6) + 1;
-
     const dice = document.getElementById("dice");
     const result = document.getElementById("result");
     const btn = document.getElementById("rollBtn");
@@ -62,27 +60,36 @@ async function rollDice() {
     btn.disabled = true;
     result.innerText = "🎲 Rolling...";
 
-    dice.classList.add("shake");
+    dice.classList.add("roll-animation");
 
-    setTimeout(() => {
-        dice.classList.remove("shake");
-        dice.innerText = getDiceFace(value);
-    }, 500);
+    // Change dice rapidly
+    const interval = setInterval(() => {
+        dice.innerText = getDiceFace(Math.floor(Math.random() * 6) + 1);
+    }, 100);
 
-    try {
-        const ref = doc(db, "users", currentPhone);
+    setTimeout(async () => {
+        clearInterval(interval);
 
-        await setDoc(ref, {
-            rolled: true,
-            result: value
-        }, { merge: true });
+        const finalValue = Math.floor(Math.random() * 6) + 1;
 
-        result.innerText = "🎉 You got: " + value;
-    } catch (err) {
-        result.innerText = "❌ Error saving result.";
-    }
+        dice.innerText = getDiceFace(finalValue);
+        dice.classList.remove("roll-animation");
 
-    btn.disabled = false;
+        try {
+            const ref = doc(db, "users", currentPhone);
+
+            await setDoc(ref, {
+                rolled: true,
+                result: finalValue
+            }, { merge: true });
+
+            result.innerText = "🎉 You got: " + finalValue;
+        } catch (err) {
+            result.innerText = "❌ Error saving result.";
+        }
+
+        btn.disabled = false;
+    }, 3000);
 }
 
 // Dice faces
