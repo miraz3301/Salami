@@ -8,21 +8,29 @@
 </head>
 <body>
 
-    <h1>Eid Salami 2026 🌙✨</h1>
+    <h1>🌙 Eid Salami 2026 ✨</h1>
     <p>By Miraz | MIST | CSE</p>
 
-    <div id="login">
-        <input type="text" id="name" placeholder="Enter Name"><br>
-        <input type="text" id="phone" placeholder="Enter Phone"><br>
-        <button id="enterBtn">Enter</button>
+    <!-- LOGIN -->
+    <div id="login" class="card">
+        <h2>Login</h2>
+        <input type="text" id="name" placeholder="Enter Name">
+        <input type="text" id="phone" placeholder="Enter Phone">
+        <button id="enterBtn" class="btn">Enter</button>
     </div>
 
-    <div id="game" style="display:none;">
-        <h2>Roll Dice 🎲</h2>
-        <button id="rollBtn">Roll</button>
+    <!-- GAME -->
+    <div id="game" class="card" style="display:none;">
+        <h2>🎲 Roll the Dice</h2>
+
+        <div id="dice" class="dice">🎲</div>
+
+        <button id="rollBtn" class="btn">Roll</button>
+
         <h3 id="result"></h3>
     </div>
 
     <script type="module" src="script.js"></script>
+
 </body>
 </html>
