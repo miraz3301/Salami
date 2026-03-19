@@ -1,5 +1,5 @@
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
-import { getFirestore, doc, getDoc, setDoc } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+import { getFirestore, doc, getDoc, setDoc, updateDoc, increment } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
 
 // Firebase Config
 const firebaseConfig = {
@@ -37,13 +37,16 @@ async function login() {
 
     await setDoc(ref, {
         name: name,
-        rolled: false
+        rolled: false,
+        rollCount: 0 // 👈 INITIAL COUNT
     });
 
     currentPhone = phone;
 
     document.getElementById("login").style.display = "none";
     document.getElementById("game").style.display = "block";
+
+    document.getElementById("count").innerText = "Rolls: 0";
 }
 
 // DICE
@@ -56,13 +59,13 @@ async function rollDice() {
     const dice = document.getElementById("dice");
     const result = document.getElementById("result");
     const btn = document.getElementById("rollBtn");
+    const countDisplay = document.getElementById("count");
 
     btn.disabled = true;
     result.innerText = "🎲 Rolling...";
 
     dice.classList.add("roll-animation");
 
-    // Change dice rapidly
     const interval = setInterval(() => {
         dice.innerText = getDiceFace(Math.floor(Math.random() * 6) + 1);
     }, 100);
@@ -78,10 +81,18 @@ async function rollDice() {
         try {
             const ref = doc(db, "users", currentPhone);
 
-            await setDoc(ref, {
-                rolled: true,
-                result: finalValue
-            }, { merge: true });
+            // ✅ increment roll count
+            await updateDoc(ref, {
+                rollCount: increment(1),
+                result: finalValue,
+                rolled: true
+            });
+
+            
+            const snap = await getDoc(ref);
+            const data = snap.data();
+
+            countDisplay.innerText = "Rolls: " + (data.rollCount || 0);
 
             result.innerText = "🎉 You got Salami: " + finalValue + " Taka";
         } catch (err) {
@@ -98,7 +109,7 @@ function getDiceFace(v) {
     return faces[v];
 }
 
-// Events
+// EVENTS
 document.addEventListener("DOMContentLoaded", () => {
     document.getElementById("enterBtn").addEventListener("click", login);
     document.getElementById("rollBtn").addEventListener("click", rollDice);
