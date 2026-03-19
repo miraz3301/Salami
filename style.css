@@ -1,26 +1,70 @@
 body {
-    background: linear-gradient(135deg, #0f2027, #203a43, #2c5364);
+    background: linear-gradient(135deg, #141e30, #243b55);
     color: white;
     text-align: center;
-    font-family: Arial;
-    margin-top: 50px;
+    font-family: 'Segoe UI', sans-serif;
+    margin-top: 60px;
 }
 
-h1 {
-    color: gold;
+/* Card */
+.card {
+    background: rgba(255, 255, 255, 0.08);
+    backdrop-filter: blur(12px);
+    border-radius: 16px;
+    padding: 30px;
+    width: 320px;
+    margin: auto;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.4);
 }
 
+/* Inputs */
 input {
-    padding: 10px;
-    margin: 10px;
-    border-radius: 8px;
+    display: block;
+    width: 90%;
+    margin: 10px auto;
+    padding: 12px;
+    border-radius: 10px;
     border: none;
+    outline: none;
 }
 
-button {
-    padding: 10px 20px;
-    background: gold;
+/* Buttons */
+.btn {
+    margin-top: 15px;
+    padding: 12px 25px;
+    background: linear-gradient(45deg, gold, orange);
     border: none;
-    border-radius: 8px;
+    border-radius: 10px;
     cursor: pointer;
+    font-weight: bold;
+    transition: 0.3s;
+}
+
+.btn:hover {
+    transform: scale(1.1);
+    box-shadow: 0 0 15px gold;
+}
+
+.btn:active {
+    transform: scale(0.95);
+}
+
+/* Dice */
+.dice {
+    font-size: 90px;
+    margin: 20px 0;
+    transition: transform 0.3s ease;
+}
+
+/* Shake animation */
+@keyframes shake {
+    0% { transform: rotate(0deg); }
+    25% { transform: rotate(25deg); }
+    50% { transform: rotate(-25deg); }
+    75% { transform: rotate(15deg); }
+    100% { transform: rotate(0deg); }
+}
+
+.shake {
+    animation: shake 0.5s;
 }
