@@ -1,7 +1,7 @@
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
 import { getFirestore, doc, getDoc, setDoc } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
 
-// Firebase Configuration
+// Firebase Config
 const firebaseConfig = {
     apiKey: "AIzaSyAkRmEtQTGwhEv8dhGyiH1fB_9Jzamwlog",
     authDomain: "salami-dice.firebaseapp.com",
@@ -17,6 +17,8 @@ const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
 
 let currentPhone = null;
+
+console.log("Script loaded");
 
 // --- LOGIN FUNCTION ---
 async function login() {
@@ -43,30 +45,33 @@ async function login() {
 
             currentPhone = phone;
 
-            // UI Transition
             document.getElementById("login").style.display = "none";
             document.getElementById("game").style.display = "block";
         }
     } catch (error) {
-        console.error("Error during login:", error);
-        alert("Connection error. Check your Firestore rules.");
+        console.error(error);
+        alert("Error connecting to Firebase!");
     }
 }
 
-// --- DICE ROLL FUNCTION ---
+// --- DICE FUNCTION ---
 async function rollDice() {
-    // Generate random number 1-10
+    if (!currentPhone) {
+        alert("Please login first!");
+        return;
+    }
+
     const value = Math.floor(Math.random() * 10) + 1;
-    
+
     const resultDisplay = document.getElementById("result");
     const rollButton = document.getElementById("rollBtn");
 
     resultDisplay.innerText = "🎲 Rolling...";
-    rollButton.disabled = true; // Prevent double clicking
+    rollButton.disabled = true;
 
     try {
         const ref = doc(db, "users", currentPhone);
-        
+
         await setDoc(ref, {
             rolled: true,
             result: value
@@ -74,13 +79,14 @@ async function rollDice() {
 
         resultDisplay.innerText = "🎉 You got: " + value;
     } catch (error) {
-        console.error("Error saving roll:", error);
+        console.error(error);
         resultDisplay.innerText = "❌ Error saving result.";
         rollButton.disabled = false;
     }
 }
 
-// --- EVENT LISTENERS ---
-// This connects the HTML buttons to the JS functions safely
-document.getElementById("enterBtn").addEventListener("click", login);
-document.getElementById("rollBtn").addEventListener("click", rollDice);
+// --- EVENTS (IMPORTANT FIX) ---
+document.addEventListener("DOMContentLoaded", () => {
+    document.getElementById("enterBtn").addEventListener("click", login);
+    document.getElementById("rollBtn").addEventListener("click", rollDice);
+});
